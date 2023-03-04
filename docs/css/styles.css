@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'aeternusHeavy';
+  src: url('../fonts/04-aeternus_heavy_(variable eight)+italic-VF.ttf') format('truetype');
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+
+h1 {
+  font-family: 'aeternusHeavy';
+}

@@ -1,0 +1,22 @@
+{
+  "name": "kcrwmembers.github.io",
+  "version": "1.0.0",
+  "description": "WIP.",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server docs --cors -o -a localhost"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KCRWMembers/KCRWMembers.github.io.git"
+  },
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/KCRWMembers/KCRWMembers.github.io/issues"
+  },
+  "homepage": "https://github.com/KCRWMembers/KCRWMembers.github.io#readme",
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}
