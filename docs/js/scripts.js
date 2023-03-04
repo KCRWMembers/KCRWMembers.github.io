@@ -19,7 +19,7 @@
  * add paragraph mode
  */
 
-const initialValue = 'Turn it up';
+const initialValue = 'Turn it up ☀️';
 const containerID = '#variableType';
 const spanIDPrefix = 'explore'; // This string must be valid as an HTML ID
 let magicString;
