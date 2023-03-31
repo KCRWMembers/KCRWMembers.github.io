@@ -105,6 +105,10 @@ function setup() {
     formatDropdown.selected(INSTAGRAM);
     formatDropdown.changed(formatChanged);
 
+    const changeColorsBtn = createButton('Change Colors');
+    changeColorsBtn.mousePressed(formatChanged);
+    changeColorsBtn.position(460, 10);
+
     c = createCanvas(1080/2, 1080/2);
     c.position(10, 40);
 
