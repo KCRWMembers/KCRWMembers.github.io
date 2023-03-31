@@ -22,6 +22,7 @@ const INSTAGRAM = "Instagram";
 const STORY = "Story";
 const WIDESCREEN = "Widescreen";
 const POSTER = "Poster";
+const OPTIONS = [INSTAGRAM, STORY, WIDESCREEN, POSTER];
 
 const colors = [
     {text: "#f46020", background: "#97d8e7"},
@@ -31,6 +32,8 @@ const colors = [
     {text: "#FFCE00", background: "#129CB2"},
     {text: "#F46020", background: "#BF3100"}
 ];
+
+let currentColors = colors[0];
 
 function preload() {
     typeface = loadFont('../../fonts/FTCalhernTrial-CondensedSemibold.otf');
@@ -75,43 +78,45 @@ function formatChanged() {
             resizePoster();
             break;
     }
+}
 
-    let pickColors = random(colors);
-    background(pickColors.background);
+function changeColors() {
+    currentColors = random(colors);
+    background(currentColors.background);
     noStroke();
-    fill(pickColors.text);
+    fill(currentColors.text);
 }
 
 function setup() {
     pixelDensity(2);
 
-    const savePNGBtn = createButton('Save PNG');
-    savePNGBtn.mousePressed(savePNGClick);
-    savePNGBtn.position(10, 10);
+    select("#btn-save").mousePressed(savePNGClick);
 
-    const headlineInput = createInput('Headline');
-    headlineInput.position(110, 10)
-    headlineInput.size(200);
-    headlineInput.value(headline);
-    headlineInput.input(headlineChange);
+    // const headlineInput = createInput('Headline');
+    // headlineInput.position(110, 10)
+    // headlineInput.size(200);
+    // headlineInput.value(headline);
+    // headlineInput.input(headlineChange);
+    
 
-    formatDropdown = createSelect();
-    formatDropdown.position(360, 10);
-    formatDropdown.option(INSTAGRAM);
-    formatDropdown.option(STORY);
-    formatDropdown.option(WIDESCREEN);
-    formatDropdown.option(POSTER);
-    formatDropdown.selected(INSTAGRAM);
+
+    // formatDropdown = select("#format-dropdown");
+    formatDropdown = createSelect(select("#format-dropdown"));
+    // formatDropdown.position(360, 10);
+    for (let o of OPTIONS) {
+        formatDropdown.option(o);
+    }
     formatDropdown.changed(formatChanged);
 
-    const changeColorsBtn = createButton('Change Colors');
-    changeColorsBtn.mousePressed(formatChanged);
-    changeColorsBtn.position(460, 10);
+    // const changeColorsBtn = createButton('Change Colors');
+    // changeColorsBtn.mousePressed(formatChanged);
+    // changeColorsBtn.position(460, 10);
+    select("#btn-change-colors").mousePressed(changeColors);
 
     c = createCanvas(1080/2, 1080/2);
-    c.position(10, 40);
+    c.position(10, 160);
 
-    formatChanged();
+    changeColors();
 }
 
 function drawWord(word) {
@@ -197,6 +202,8 @@ function drawSentence() {
 
 function draw() {
     textFont(typeface);
+    background(currentColors.background);
+    fill(currentColors.text);
 
     if (headline.trim().indexOf(" ") === -1) {
         drawWord(headline.trim());
