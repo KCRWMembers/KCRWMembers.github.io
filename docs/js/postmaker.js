@@ -24,8 +24,17 @@ const STORY = "Story";
 const WIDESCREEN = "Widescreen";
 const POSTER = "Poster";
 
+const colors = [
+    {text: "#f46020", background: "#97d8e7"},
+    {text: "#97d8e7", background: "#f46020"},
+    {text: "#0CBA1C", background: "#17E530"},
+    {text: "#AD098A", background: "#EF35C8"},
+    {text: "#FFCE00", background: "#129CB2"},
+    {text: "#F46020", background: "#BF3100"}
+];
+
 function preload() {
-    typeface = loadFont('../../fonts/AttilaSansSharpTrial-Regular.otf');
+    typeface = loadFont('../../fonts/FTCalhernTrial-CondensedSemibold.otf');
 }
 
 function savePNGClick() {
@@ -66,7 +75,12 @@ function formatChanged() {
         case POSTER:
             resizePoster();
             break;
-    }    
+    }
+
+    let pickColors = random(colors);
+    background(pickColors.background);
+    noStroke();
+    fill(pickColors.text);
 }
 
 function setup() {
@@ -99,6 +113,42 @@ function setup() {
 
 function drawWord(word) {
     // TODO: have this adjust the type based on formatDropdown.value()
+    // maybe just the type size
+    // width and height can be use hmm
+    // 
+    
+    push();
+
+    rectMode(CORNER);
+    angleMode(DEGREES);
+    const sz = Math.min(width, height)/5;
+    textSize(sz);
+
+    // TODO: need a different Y adjustment for story and poster modes
+    push();
+    rotate(-15);
+    text("K", 0, height/10 + sz/3);
+    pop();
+
+    push();
+    rotate(15);
+    text("C", width - width/10, -sz/2);
+    pop();
+
+    push();
+    rotate(15);
+    text("R", width/4, height - sz * .3);
+    pop();
+
+    // TODO: only works on square
+    push();
+    rotate(-15);
+    text("W", width - width * .4, height + sz * .9);
+    pop();
+
+    pop();
+
+    return;
     
     if (word.toUpperCase() === "KCRW") {
         // 1: headline is KCRW
@@ -143,9 +193,6 @@ function drawSentence() {
 }
 
 function draw() {
-    background('#97d8e7');
-    noStroke();
-    fill('#f46020');
     textFont(typeface);
 
     if (headline.trim().indexOf(" ") === -1) {
