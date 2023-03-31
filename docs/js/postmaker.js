@@ -1,20 +1,19 @@
 // TODO: figure out 300 DPI: https://gokcetaskan.com/artofcode/high-quality-export
 // TODO: PDF support: https://github.com/zenozeng/p5.js-pdf
-// colors; orange: #f46020; blue: #97d8e7
 
 /**
  * Week 11 TODOs
  * - do 4 random type treatments using the compass idea
- * - cycle through 5 color combos
- * - make it available for 4 aspect ratios:
- *     1:1
- *     16:9 video thumbnail
- *     9:16 IG story
- *     2:3 for poster
+ *
+ * CRIT:
+ * - how can I incorporate motion or sound?
+ * - what are the other type treatments?
+ * - how else would copy live within these compositions?
+ * - what about motion?
  */
 
 let c;
-let headline = "KCRW";//"Headline";
+let headline = "KCRW";
 
 let typeface;
 let formatDropdown;
