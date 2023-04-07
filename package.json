@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npx tailwindcss -i ./src/input.css -o ./docs/css/tailwind.css",
+    "watch": "npx tailwindcss --watch -i ./src/input.css -o ./docs/css/tailwind.css",
     "start": "http-server docs --cors -o -a localhost"
   },
   "repository": {

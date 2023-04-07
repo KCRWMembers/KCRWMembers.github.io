@@ -96,10 +96,31 @@ function changeColors() {
     fill(currentColors.text);
 }
 
+function setupHTML() {
+  // const row1 = select('#row1');
+  // let row1HTML = '';
+  // row1HTML += '<object type="image/svg+xml" data="../../img/KCRW_K_black.svg" width="100"></object>';
+  // row1HTML += '<object type="image/svg+xml" data="../../img/KCRW_C_black.svg" width="100"></object>';
+  // row1.html(row1HTML);
+
+  // const row2 = select('#row2');
+  // let row2HTML = '';
+  // row2HTML += '<object type="image/svg+xml" data="../../img/KCRW_R_black.svg" width="100"></object>';
+  // row2HTML += '<object type="image/svg+xml" data="../../img/KCRW_W_black.svg" width="100"></object>';
+  // row2.html(row2HTML);
+
+  select("#K_svg").html('<object type="image/svg+xml" data="../../img/KCRW_K_black.svg" width="100"></object>');
+  select("#C_svg").html('<object style="float:right" type="image/svg+xml" data="../../img/KCRW_C_black.svg" width="100"></object>');
+  select("#R_svg").html('<object type="image/svg+xml" data="../../img/KCRW_R_black.svg" width="100"></object>');
+  select("#W_svg").html('<object style="float:right" type="image/svg+xml" data="../../img/KCRW_W_black.svg" width="100"></object>');
+}
+
 function setup() {
+    setupHTML();
+
     pixelDensity(2);
 
-    select("#btn-save").mousePressed(savePNGClick);
+    // select("#btn-save").mousePressed(savePNGClick);
 
     // const headlineInput = createInput('Headline');
     // headlineInput.position(110, 10)
@@ -110,22 +131,22 @@ function setup() {
 
 
     // formatDropdown = select("#format-dropdown");
-    formatDropdown = createSelect(select("#format-dropdown"));
-    // formatDropdown.position(360, 10);
-    for (let o of OPTIONS) {
-        formatDropdown.option(o);
-    }
-    formatDropdown.changed(formatChanged);
+    // formatDropdown = createSelect(select("#format-dropdown"));
+    // // formatDropdown.position(360, 10);
+    // for (let o of OPTIONS) {
+    //     formatDropdown.option(o);
+    // }
+    // formatDropdown.changed(formatChanged);
 
-    // const changeColorsBtn = createButton('Change Colors');
-    // changeColorsBtn.mousePressed(formatChanged);
-    // changeColorsBtn.position(460, 10);
-    select("#btn-change-colors").mousePressed(changeColors);
+    // // const changeColorsBtn = createButton('Change Colors');
+    // // changeColorsBtn.mousePressed(formatChanged);
+    // // changeColorsBtn.position(460, 10);
+    // select("#btn-change-colors").mousePressed(changeColors);
 
-    c = createCanvas(1080/2, 1080/2);
-    c.position(10, 160);
+    // c = createCanvas(1080/2, 1080/2);
+    // c.position(10, 160);
 
-    changeColors();
+    // changeColors();
 }
 
 function convertedK() {
@@ -278,15 +299,84 @@ function drawSentence() {
 }
 
 function draw() {
-    textFont(typeface);
-    background(currentColors.background);
-    fill(currentColors.text);
+    // Loop runs every 2 seconds @ 60fps
+    // Map out scale, by letter, based on mod of framecount
+    // 
+    // Frame ranges:
+    // 0-30: K, W 2x
+    // 30-60: C, R 2x
+    // 60-90: K, W 4x; K 1x 
+    // 90-120: all 1x
+    // 
+    // Also, change colors within each case, each "scene change"
+    const scaleFrame = frameCount % 120;
+    // const small = "50px";
+    // const medium = "100px";
+    // const large = "200px";
 
-    logoFrame();
+    const small = `${.15 * width}%`;
+    const medium = `${.30 * width}%`;
+    const large = `${.60 * width}%`;
 
-    // if (headline.trim().indexOf(" ") === -1) {
-    //     drawWord(headline.trim());
-    // } else {
-    //     drawSentence(headline);
-    // }
+    let k = c = r = w = small;
+
+    if (scaleFrame < 30) {
+        k = w = medium;
+    } else if (scaleFrame < 40) {
+        k = c = r = w = medium;
+    } else if (scaleFrame < 60) {
+        c = r = medium;
+        k = w = large;
+    } else if (scaleFrame < 80) {
+        k = c = r = w = large;
+    } else if (scaleFrame < 90) {
+       w = c = r = large;
+    }
+
+    select("#K_svg > object").style('width', k)
+    select("#C_svg > object").style('width', c)
+    select("#R_svg > object").style('width', r)
+    select("#W_svg > object").style('width', w)
+
+    // Adjust the overall frame
+
+    const sizeFrame = frameCount % 240;
+
+    // TODO: swap these out for tailwind classes, need to ensure they actually make it to the build...
+    // const full = "4"; 
+    // const half = "1/2";
+    // const quarter = "1/4";
+    
+    const full = "1rem"; 
+    const half = "50%";
+    const quarter = "25%";
+    let rBottom = wBottom = full;
+    let cRight = wRight = full;
+
+    // top/bottom/left/right = 1rem
+    // top/bottom/left = 1rem; right = 50%
+    // top/left = 1rem; right/bottom = 50%
+    if (sizeFrame < 60) {
+    } else if (sizeFrame < 120) {
+        cRight = wRight = half;
+    } else if (sizeFrame < 180) {
+       cRight = wRight = half;
+       rBottom = wBottom = half;
+    }
+
+    // K fixed pos
+    select("#K_svg").style('top', full)
+    select("#K_svg").style('left', full)
+
+    // C fixed pos
+    select("#C_svg").style('top', full)
+    select("#C_svg").style('right', cRight)
+    
+    // R fixed pos
+    select("#R_svg").style('bottom', rBottom)
+    select("#R_svg").style('left', full)
+    
+    // W fixed pos
+    select("#W_svg").style('bottom', wBottom)
+    select("#W_svg").style('right', wRight)
 }

@@ -9,3 +9,7 @@ html, body {
 canvas {
   display: block;
 }
+
+svg {
+  color: pink;
+}
