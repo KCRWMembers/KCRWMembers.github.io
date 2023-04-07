@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: 'Attila';
+  src: url('../fonts/AttilaSansSharpTrial-Bold.otf') format('truetype');
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -27,5 +32,26 @@ svg {
 }
 
 .filter4 {
+  filter: invert(46%) sepia(94%) saturate(399%) hue-rotate(140deg) brightness(90%) contrast(97%);
+}
+
+.filter5 {
   filter: invert(45%) sepia(44%) saturate(3298%) hue-rotate(349deg) brightness(98%) contrast(94%);
+}
+
+/* For homepage only */
+
+nav > a {
+  color: white;
+  font-family: "Attila";
+  @apply text-lg tracking-wider;
+}
+
+nav > a:hover {
+  color: black;
+  @apply filter2;
+}
+
+.logo {
+  filter: invert(97%) sepia(31%) saturate(2669%) hue-rotate(166deg) brightness(95%) contrast(89%);;
 }

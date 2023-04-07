@@ -1918,6 +1918,10 @@ video {
   top: 1px;
 }
 
+.float-right {
+  float: right;
+}
+
 .m-4 {
   margin: 1rem;
 }
@@ -1927,16 +1931,16 @@ video {
   margin-right: auto;
 }
 
+.ml-4 {
+  margin-left: 1rem;
+}
+
 .mr-5 {
   margin-right: 1.25rem;
 }
 
 .flex {
   display: flex;
-}
-
-.grid {
-  display: grid;
 }
 
 .max-w-screen-sm {
@@ -1959,10 +1963,6 @@ video {
   transform-origin: top right;
 }
 
-.grid-flow-row {
-  grid-auto-flow: row;
-}
-
 .flex-col {
   flex-direction: column;
 }
@@ -1971,8 +1971,8 @@ video {
   flex-wrap: wrap;
 }
 
-.content-between {
-  align-content: space-between;
+.items-end {
+  align-items: flex-end;
 }
 
 .items-center {
@@ -2079,6 +2079,12 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+@font-face {
+  font-family: 'Attila';
+
+  src: url('../fonts/AttilaSansSharpTrial-Bold.otf') format('truetype');
+}
+
 html, body {
   margin: 0;
   padding: 0;
@@ -2105,7 +2111,30 @@ svg {
 }
 
 .filter4 {
+  filter: invert(46%) sepia(94%) saturate(399%) hue-rotate(140deg) brightness(90%) contrast(97%);
+}
+
+.filter5 {
   filter: invert(45%) sepia(44%) saturate(3298%) hue-rotate(349deg) brightness(98%) contrast(94%);
+}
+
+/* For homepage only */
+
+nav > a {
+  color: white;
+  font-family: "Attila";
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  letter-spacing: 0.05em;
+}
+
+nav > a:hover {
+  color: black;
+  filter: invert(94%) sepia(94%) saturate(872%) hue-rotate(164deg) brightness(98%) contrast(85%);
+}
+
+.logo {
+  filter: invert(97%) sepia(31%) saturate(2669%) hue-rotate(166deg) brightness(95%) contrast(89%);
 }
 
 .hover\:text-gray-900:hover {
