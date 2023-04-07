@@ -29,13 +29,14 @@ let C_SVG;
 let R_SVG;
 let W_SVG;
 
+
+// Filters are computed here: https://codepen.io/sosuke/pen/Pjoqqp
+// Forked here, ideally bring this into the codebase: https://codepen.io/shakeelmohamed-the-vuer/pen/XWxJmGE
 const colors = [
-    {text: "#f46020", background: "#97d8e7"},
-    {text: "#97d8e7", background: "#f46020"},
-    {text: "#0CBA1C", background: "#17E530"},
-    {text: "#AD098A", background: "#EF35C8"},
-    {text: "#FFCE00", background: "#129CB2"},
-    {text: "#F46020", background: "#BF3100"}
+    {text: "#f46020", background: "#97d8e7", CSSclass: 'filter1'},
+    {text: "#97d8e7", background: "#f46020", CSSclass: 'filter2'},
+    {text: "#FFCE00", background: "#129CB2", CSSclass: 'filter3'},
+    {text: "#F46020", background: "#BF3100", CSSclass: 'filter4'}
 ];
 
 let currentColors = colors[0];
@@ -91,23 +92,27 @@ function formatChanged() {
 
 function changeColors() {
     currentColors = random(colors);
-    background(currentColors.background);
-    noStroke();
-    fill(currentColors.text);
+
+    select('html').style('background-color', currentColors.background);
+
+    // Applying a class on a non-fixed parent breaks the position of children
+    // See: https://stackoverflow.com/questions/52937708/why-does-applying-a-css-filter-on-the-parent-break-the-child-positioning
+    
+    for (let l of "KCRW") {
+        select(`#${l}_svg`).removeClass('filter1');
+        select(`#${l}_svg`).removeClass('filter2');
+        select(`#${l}_svg`).removeClass('filter3');
+        select(`#${l}_svg`).removeClass('filter4');
+        select(`#${l}_svg`).addClass(currentColors.CSSclass);
+    }
+
+    // background(currentColors.background);
+    // noStroke();
+    // fill(currentColors.text);
 }
 
 function setupHTML() {
-  // const row1 = select('#row1');
-  // let row1HTML = '';
-  // row1HTML += '<object type="image/svg+xml" data="../../img/KCRW_K_black.svg" width="100"></object>';
-  // row1HTML += '<object type="image/svg+xml" data="../../img/KCRW_C_black.svg" width="100"></object>';
-  // row1.html(row1HTML);
-
-  // const row2 = select('#row2');
-  // let row2HTML = '';
-  // row2HTML += '<object type="image/svg+xml" data="../../img/KCRW_R_black.svg" width="100"></object>';
-  // row2HTML += '<object type="image/svg+xml" data="../../img/KCRW_W_black.svg" width="100"></object>';
-  // row2.html(row2HTML);
+  
 
   select("#K_svg").html('<object type="image/svg+xml" data="../../img/KCRW_K_black.svg" width="100"></object>');
   select("#C_svg").html('<object style="float:right" type="image/svg+xml" data="../../img/KCRW_C_black.svg" width="100"></object>');
@@ -117,6 +122,7 @@ function setupHTML() {
 
 function setup() {
     setupHTML();
+    changeColors();
 
     pixelDensity(2);
 
@@ -309,10 +315,8 @@ function draw() {
     // 90-120: all 1x
     // 
     // Also, change colors within each case, each "scene change"
+    
     const scaleFrame = frameCount % 120;
-    // const small = "50px";
-    // const medium = "100px";
-    // const large = "200px";
 
     const small = `${.15 * width}%`;
     const medium = `${.30 * width}%`;
@@ -338,6 +342,16 @@ function draw() {
     select("#R_svg > object").style('width', r)
     select("#W_svg > object").style('width', w)
 
+    // Color cycle only at certain points
+    switch (scaleFrame) {
+        case 0:
+        case 30:
+        case 60:
+        case 90:
+            changeColors();
+            break;
+    }
+
     // Adjust the overall frame
 
     const sizeFrame = frameCount % 240;
@@ -357,8 +371,10 @@ function draw() {
     // top/bottom/left = 1rem; right = 50%
     // top/left = 1rem; right/bottom = 50%
     if (sizeFrame < 60) {
+
     } else if (sizeFrame < 120) {
         cRight = wRight = half;
+
     } else if (sizeFrame < 180) {
        cRight = wRight = half;
        rBottom = wBottom = half;
