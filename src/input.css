@@ -13,3 +13,19 @@ canvas {
 svg {
   color: pink;
 }
+
+.filter1 {
+  filter: invert(45%) sepia(44%) saturate(3298%) hue-rotate(349deg) brightness(98%) contrast(94%);
+}
+
+.filter2 {
+  filter: invert(94%) sepia(94%) saturate(872%) hue-rotate(164deg) brightness(98%) contrast(85%);
+}
+
+.filter3 {
+  filter: invert(87%) sepia(35%) saturate(3375%) hue-rotate(358deg) brightness(100%) contrast(104%); 
+}
+
+.filter4 {
+  filter: invert(45%) sepia(44%) saturate(3298%) hue-rotate(349deg) brightness(98%) contrast(94%);
+}
