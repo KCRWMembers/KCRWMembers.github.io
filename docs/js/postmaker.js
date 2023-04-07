@@ -119,29 +119,87 @@ function setup() {
     changeColors();
 }
 
-function drawWord(word) {
+// TODO: can probably generalize this to drawChar(context)
+//       which takes all the dimensions needed
+function drawK(sz) {
+    push();
+    rotate(-15);
+
+    let xPos = 0;
+    let yPos = 0;
+
+    switch(formatDropdown.value()) {
+        case INSTAGRAM:
+            xPos = 0;
+            yPos = height/10 + sz/3;
+            break;
+        case STORY:
+            // Rotating from top left
+            // xPos = 0;
+            // yPos = height / 5;
+            
+            // Rotating from center of canvas
+            xPos = -width/3;
+            yPos = -height/2.5;
+            break;
+        case WIDESCREEN:
+            break;
+        case POSTER:
+            break;
+    }
+
+    text("K", xPos, yPos);
+
+    pop();
+}
+
+function drawC(sz) {
+    push();
+    rotate(15);
+
+    let xPos = 0;
+    let yPos = 0;
+
+    switch(formatDropdown.value()) {
+        case INSTAGRAM:
+            xPos = width - width/10;
+            yPos = -sz/2;
+            break;
+        case STORY:
+            // xPos = width - width/5;
+            // yPos = -sz/2;
+            break;
+        case WIDESCREEN:
+            break;
+        case POSTER:
+            break;
+    }
+
+    text("C", xPos, yPos);
+    pop();
+}
+
+function logoFrame(word) {
     // TODO: have this adjust the type based on formatDropdown.value()
     // maybe just the type size
     // width and height can be use hmm
-    // 
     
     push();
 
     rectMode(CORNER);
     angleMode(DEGREES);
+    translate(width/2, height/2);
     const sz = Math.min(width, height)/5;
     textSize(sz);
 
     // TODO: need a different Y adjustment for story and poster modes
-    push();
-    rotate(-15);
-    text("K", 0, height/10 + sz/3);
-    pop();
+    drawK(sz);
 
-    push();
-    rotate(15);
-    text("C", width - width/10, -sz/2);
-    pop();
+    // push();
+    // rotate(15);
+    // text("C", width - width/10, -sz/2);
+    // pop();
+    drawC(sz);
 
     push();
     rotate(15);
@@ -155,45 +213,6 @@ function drawWord(word) {
     pop();
 
     pop();
-
-    return;
-    
-    if (word.toUpperCase() === "KCRW") {
-        // 1: headline is KCRW
-        // TODO: add some randomness or motion to it
-        push();
-
-        rectMode(CORNER);
-        angleMode(DEGREES);
-        
-        push();
-        textSize(375);
-        text("K", -40, height * .45);
-        pop();
-
-        push();
-        textSize(300);
-        rotate(-17.5)
-        text("C", width*.25, height*.65);
-        pop();
-
-        push();
-        textSize(350);
-        rotate(14.5)
-        text("R", width*.15, height*.9);
-        pop();
-
-        push();
-        textSize(275);
-        rotate(-15)
-        text("W", width*0.2, height*1.2);
-        pop();
-
-        pop();
-    } else {
-        // 2: headline is a word; split into pairs?
-        
-    }
 }
 
 function drawSentence() {
@@ -205,9 +224,11 @@ function draw() {
     background(currentColors.background);
     fill(currentColors.text);
 
-    if (headline.trim().indexOf(" ") === -1) {
-        drawWord(headline.trim());
-    } else {
-        drawSentence(headline);
-    }
+    logoFrame();
+
+    // if (headline.trim().indexOf(" ") === -1) {
+    //     drawWord(headline.trim());
+    // } else {
+    //     drawSentence(headline);
+    // }
 }
