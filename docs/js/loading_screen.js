@@ -63,8 +63,10 @@ function setup() {
 }
 
 function draw() {
-    if (frameCount >= 600) {
-        window.location.href = window.location.href.replace("/loading", "");
+    if (frameCount >= 60 * 6) { // Redirect after 6s
+        // window.location.href = window.location.href.replace("/loading", "");
+        // window.location.href = window.location.href + "/home";
+        window.location.href = window.location.origin + "/home";
     }
 
     // Loop runs every 2 seconds @ 60fps
