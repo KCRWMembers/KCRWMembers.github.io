@@ -1931,6 +1931,11 @@ video {
   margin-right: auto;
 }
 
+.my-4 {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
 .ml-4 {
   margin-left: 1rem;
 }
@@ -2137,11 +2142,12 @@ nav > a:hover {
   filter: invert(97%) sepia(31%) saturate(2669%) hue-rotate(166deg) brightness(95%) contrast(89%);
 }
 
+button > i {
+  display: block;
+}
+
 i[class^="gg-"] {
   color: white;
-  box-sizing: border-box;
-  position: relative;
-  display: block;
   --ggs: 2;
 }
 
