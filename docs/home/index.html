@@ -19,12 +19,24 @@
         </nav>
     </header>
     <main>
+        <div id="controls" class="m-4 max-w-screen-sm">
+            <button id="btn-save" class="border-0 bg-green-500 text-white px-4 py-2 focus:outline-none rounded text-lg font-semibold">Save</button>
+            <button id="btn-change-colors" class="border-0 bg-sky-500 text-white px-4 py-2 focus:outline-none rounded text-lg font-semibold">Change Colors</button>
+            <select id="format-dropdown" class="border-0 bg-sky-500 text-white px-4 py-2 focus:outline-none rounded text-lg font-semibold"></select>
+        </div>
+        <div id="post-generator-canvas">
+        </div>
     </main>
     <footer>
         <div class="container mx-auto fixed bottom-0 my-4">
-            <button id="btn-play-pause" onclick="playPauseOnClick()">
-                <i class="gg-play-button"></i>
-            </button>
+            <div class="flex">
+                <!-- TODO: fix this box resizing when icon changes, pause icon may be problematic -->
+                <button id="btn-play-pause" onclick="playPauseOnClick()">
+                    <i class="gg-play-button"></i>
+                </button>
+                <div id="display-text" class="font-bold mx-4 text-white">KCRW Live</div>
+            </div>
+            <div id="radio-metadata"></div>
             <div id="radio-stream"></div>
         </div>
     </footer>
