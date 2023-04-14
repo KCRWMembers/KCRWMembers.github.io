@@ -53,5 +53,13 @@ nav > a:hover {
 }
 
 .logo {
-  filter: invert(97%) sepia(31%) saturate(2669%) hue-rotate(166deg) brightness(95%) contrast(89%);;
+  filter: invert(97%) sepia(31%) saturate(2669%) hue-rotate(166deg) brightness(95%) contrast(89%);
+}
+
+i[class^="gg-"] {
+  color: white;
+  box-sizing: border-box;
+  position: relative;
+  display: block;
+  --ggs: 2;
 }

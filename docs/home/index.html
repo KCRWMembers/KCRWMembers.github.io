@@ -3,9 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://cdn.jsdelivr.net/npm/css.gg/icons/all.css' rel='stylesheet'>
     <link rel="stylesheet" type="text/css" href="../css/tailwind.css">
     <title>KCRW Members</title>
 </head>
+<!-- TOD: make this page mobile friendly -->
 <body style="background-color: #f46020" class="m-4">
     <header class="flex justify-between">
         <object type="image/svg+xml" data="../img/KCRW_logo_primary_black.svg" width="64" class="logo"></object>
@@ -18,9 +20,18 @@
     </header>
     <main>
     </main>
+    <footer>
+        <div class="container mx-auto fixed bottom-0">
+            <button id="btn-play-pause" onclick="playPauseOnClick()">
+                <i class="gg-play-button"></i>
+            </button>
+            <div id="radio-stream"></div>
+        </div>
+    </footer>
     <!-- JS -->
     <script src="https://cdn.jsdelivr.net/npm/opentype.js@latest/dist/opentype.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
     <script src="../js/home.js"></script>
+
 </body>
 </html>

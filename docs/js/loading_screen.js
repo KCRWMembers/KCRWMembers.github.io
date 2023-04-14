@@ -63,6 +63,8 @@ function setup() {
 }
 
 function draw() {
+    // TODO: make it mobile friendly
+
     if (frameCount >= 60 * 6) { // Redirect after 6s
         // window.location.href = window.location.href.replace("/loading", "");
         // window.location.href = window.location.href + "/home";
