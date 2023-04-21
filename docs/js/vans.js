@@ -1,24 +1,20 @@
 let shoe;
-let img;
-let pg;
+let shoeUVMap;
+let textureContainer;
 
 function preload() {
-  // shoe = loadModel("simplify_Blue_Vans_Shoe_SF_58pct.obj");
-  // shoe = loadModel("shaak.obj");
-  // shoe = loadModel("wee_vans.obj");
   shoe = loadModel("../img/Blue_Vans_Shoe_SF.obj");
-  // img = loadImage("../img/Blue_Vans_Shoe copy_SHRUNK.png");
-  img = loadImage("../img/editv3.png");
+  shoeUVMap = loadImage("../img/editv4.png");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
-  pg = createGraphics(2000, 2000);
-  pg.background(img);
+  textureContainer = createGraphics(2000, 2000);
+  textureContainer.background(shoeUVMap);
 }
 
 function draw() {
-  background("darkgray");
+  clear();
 
   translate(0, 0, -1000);
   scale(-200, 200); // -200 for x flips it so text reads properly
@@ -29,7 +25,5 @@ function draw() {
   
   noStroke();
   model(shoe);
-  texture(pg);
-
-
+  texture(textureContainer);
 }
