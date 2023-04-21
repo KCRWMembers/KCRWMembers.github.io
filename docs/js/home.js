@@ -18,9 +18,6 @@ function playPauseOnClick(self) {
     }
 }
 
-// TODO: pull in live streaming song titles, etc.
-// https://tracklist-api.kcrw.com/Music
-
 // create an element to contain our audio
 const el = document.createElement('audio');
 el.id = "kcrw-stream";
@@ -69,22 +66,22 @@ let R_SVG;
 let W_SVG;
 
 const colors = [
-    {text: "#f46020", background: "#97d8e7"},
-    {text: "#97d8e7", background: "#f46020"},
-    {text: "#0CBA1C", background: "#17E530"},
-    {text: "#AD098A", background: "#EF35C8"},
-    {text: "#FFCE00", background: "#129CB2"},
-    {text: "#F46020", background: "#BF3100"}
+    {text: "#f46220", background: "#560011"},
+    {text: "#560011", background: "#f46220"},
+    {text: "#82ced8", background: "#103138"},
+    {text: "#103138", background: "#82ced8"},
+    {text: "#ffce00", background: "#6d4900"},
+    {text: "#6d4900", background: "#ffce00"}
 ];
 
 let currentColors = colors[0];
 
 function preload() {
-    typeface = loadFont('../../fonts/FTCalhernTrial-CondensedSemibold.otf');
-    K_SVG = loadImage("../../img/KCRW_K_black.svg");
-    C_SVG = loadImage("../../img/KCRW_C_black.svg");
-    R_SVG = loadImage("../../img/KCRW_R_black.svg");
-    W_SVG = loadImage("../../img/KCRW_W_black.svg");
+    typeface = loadFont('../../fonts/PPCirka-Bold.otf');
+    K_SVG = loadImage("../../img/KCRW_K_white.svg");
+    C_SVG = loadImage("../../img/KCRW_C_white.svg");
+    R_SVG = loadImage("../../img/KCRW_R_white.svg");
+    W_SVG = loadImage("../../img/KCRW_W_white.svg");
 }
 
 function savePNGClick() {
@@ -97,18 +94,22 @@ function headlineChange() {
 
 function resizeStory() {
     c.resize(1080/2, 1920/2);
+    video.size(1080/2, 1920/2);
 }
 
 function resizeWidescreen() {
     c.resize(1920/2, 1080/2);
+    video.size(1920/2, 1920/2);
 }
 
 function resizeSquare() {
     c.resize(1080/2, 1080/2);
+    video.size(1080/2, 1080/2);
 }
 
 function resizePoster() {
     c.resize(1080/2, 1620/2);
+    video.size(1080/2, 1620/2);
 }
 
 function formatChanged() {
@@ -130,12 +131,15 @@ function formatChanged() {
 
 function changeColors() {
     currentColors = random(colors);
-    background(currentColors.background);
+    // background(currentColors.background);
     noStroke();
     fill(currentColors.text);
 }
 
+let video;
+
 function setup() {
+    frameRate(60);
     pixelDensity(2);
 
     select("#btn-save").mousePressed(savePNGClick);
@@ -145,8 +149,9 @@ function setup() {
     // headlineInput.size(200);
     // headlineInput.value(headline);
     // headlineInput.input(headlineChange);
+    // 
     
-
+    video = createCapture(VIDEO);
 
     // formatDropdown = select("#format-dropdown");
     formatDropdown = createSelect(select("#format-dropdown"));
@@ -163,6 +168,8 @@ function setup() {
 
     c = createCanvas(1080/2, 1080/2);
     c.position(10, 160);
+    // video.size(width, height / 16*9);
+    video.hide();
 
     changeColors();
 }
@@ -267,51 +274,6 @@ function drawC(sz) {
     pop();
 }
 
-function logoFrame(word) {
-    // TODO: have this adjust the type based on formatDropdown.value()
-    // maybe just the type size
-    // width and height can be use hmm
-    // 
-    push();
-    
-    // TODO: have it reverse rather than loop scale
-    // scale(map(frameCount % 30, 0, 30, 1, 2));
-
-
-    drawK();
-    drawC();
-
-    pop();
-    return;
-    
-    push();
-    translate(width/2, height/2);
-    const sz = Math.min(width, height)/5;
-    textSize(sz);
-
-    // TODO: need a different Y adjustment for story and poster modes
-    // drawK(sz);
-
-    // push();
-    // rotate(15);
-    // text("C", width - width/10, -sz/2);
-    // pop();
-    drawC(sz);
-
-    push();
-    rotate(15);
-    text("R", width/4, height - sz * .3);
-    pop();
-
-    // TODO: only works on square
-    push();
-    rotate(-15);
-    text("W", width - width * .4, height + sz * .9);
-    pop();
-
-    pop();
-}
-
 function drawSentence() {
     // 3: headline is multiple words; split into pairs/quarters?
 }
@@ -326,6 +288,8 @@ function logoFrame2() {
     const svgMargin = 16; // This will need to change for IG story and posters
 
     push();
+    // tint(255, 204, 0);
+    tint(currentColors.text);
     imageMode(CORNER);
     
     push();
@@ -347,20 +311,36 @@ function logoFrame2() {
     pop();
 }
 
+let data;
+
 function draw() {
-    textFont(typeface);
     background(currentColors.background);
+    push();
+    imageMode(CENTER);
+    // image(video, width/2, height/2 / 16*9); // TODO: adjust math there
+    image(video, width/2, height/2); // TODO: adjust math there
+    pop();
+
+    textFont(typeface);
     fill(currentColors.text);
 
     logoFrame2();
 
-    return;
+    if (frameCount % 30 === 0) {
+        let newdata = loadJSON("https://tracklist-api.kcrw.com/Music");
+        if (data && data.title && data.artist) {
+            select("#song-text").html(data.title);
+            select("#artist-text").html(data.artist);
+        }
+        data = newdata;
+    }
 
-    logoFrame();
-
-    // if (headline.trim().indexOf(" ") === -1) {
-    //     drawWord(headline.trim());
-    // } else {
-    //     drawSentence(headline);
-    // }
+    if (data && data.title && data.artist) {
+        push();
+        textAlign(CENTER);
+        textSize(20);
+        text(data.title, width/2, height/2.1);
+        text(data.artist, width/2, height/1.9);
+        pop();
+    }
 }
