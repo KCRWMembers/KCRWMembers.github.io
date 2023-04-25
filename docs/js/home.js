@@ -26,13 +26,9 @@ el.src = 'http://kcrw.streamguys1.com/kcrw_192k_mp3_on_air_internet_radio';
 el.autoplay = false;
 document.getElementById('radio-stream').appendChild(el);
 
-
-
-
 /// Post generator code below
-/// 
-/// 
-/// 
+
+
 
 // TODO: figure out 300 DPI: https://gokcetaskan.com/artofcode/high-quality-export
 // TODO: PDF support: https://github.com/zenozeng/p5.js-pdf
@@ -59,6 +55,10 @@ const STORY = "Story";
 const WIDESCREEN = "Widescreen";
 const POSTER = "Poster";
 const OPTIONS = [INSTAGRAM, STORY, WIDESCREEN, POSTER];
+
+// TODO: probably need more variations or math to pull these values dynamically
+const mbp_width = 640;
+const mbp_height = 480;
 
 let K_SVG;
 let C_SVG;
@@ -94,22 +94,22 @@ function headlineChange() {
 
 function resizeStory() {
     c.resize(1080/2, 1920/2);
-    video.size(1080/2, 1920/2);
+    video.size(height * mbp_width / mbp_height, height);
 }
 
 function resizeWidescreen() {
     c.resize(1920/2, 1080/2);
-    video.size(1920/2, 1920/2);
+    video.size(width, width * mbp_height / mbp_width);
 }
 
 function resizeSquare() {
     c.resize(1080/2, 1080/2);
-    video.size(1080/2, 1080/2);
+    video.size(height * mbp_width / mbp_height, height);
 }
 
 function resizePoster() {
     c.resize(1080/2, 1620/2);
-    video.size(1080/2, 1620/2);
+    video.size(height * mbp_width / mbp_height, height);
 }
 
 function formatChanged() {
@@ -168,111 +168,12 @@ function setup() {
 
     c = createCanvas(1080/2, 1080/2);
     c.position(10, 160);
-    // video.size(width, height / 16*9);
     video.hide();
 
     changeColors();
 }
 
-function convertedK() {
-    // SVG from Illustrator converted with https://svg2p5.com/
-
-    beginShape();
-    vertex(0,24.65);
-    vertex(10.21,14.379999999999999);
-    vertex(30.7,35);
-    vertex(13.11,11.45);
-    vertex(24.49,0);
-    vertex(40.51,27.97);
-    vertex(78.27,53.33);
-    vertex(66.89,64.78);
-    vertex(42.94,45.11);
-    vertex(46.55,50.96);
-    vertex(63.589999999999996,68.1);
-    vertex(53.379999999999995,78.36999999999999);
-    vertex(0,24.65);
-    endShape();
-}
-
-function convertedC() {
-    beginShape();
-    vertex(4.34,39.2);
-    vertex(38.88,4.44);
-    bezierVertex(44.85,-1.5599999999999996,52.7,-1.88,60.47,5.94);
-    bezierVertex(68.32,13.84,67.77,21.5,61.8,27.51);
-    vertex(52.379999999999995,36.99);
-    vertex(42.41,26.96);
-    vertex(52.62,16.69);
-    bezierVertex(53.559999999999995,15.740000000000002,53.41,14.64,52.62,13.850000000000001);
-    bezierVertex(51.91,13.14,50.809999999999995,12.980000000000002,49.87,13.930000000000001);
-    vertex(13.76,50.27);
-    bezierVertex(12.9,51.14,12.969999999999999,52.32,13.68,53.03);
-    bezierVertex(14.469999999999999,54.99,14.549999999999999,55.86,13.68,NaN);
-    bezierVertex(23.89,NaN,23.65,NaN,4.26,NaN);
-    bezierVertex(-1.63,NaN,-9.24,NaN,-17.090000000000003,NaN);
-    bezierVertex(-24.860000000000003,NaN,-24.550000000000004,NaN,-18.660000000000004,NaN);
-    vertex(-18.670000000000005,NaN);
-    endShape();
-}
-
 let smol = true;
-
-// TODO: can probably generalize this to drawChar(context)
-//       which takes all the dimensions needed
-function drawK() {
-    // push();
-
-    // translate(16, 16);
-
-    // fill(currentColors.text);
-    // convertedK();
-    
-    // pop();
-
-    push();
-    imageMode(CORNER);
-    stroke('pink');
-    image(K_SVG, 16, 16, 100, 100);
-    pop();
-}
-
-function drawC(sz) {
-
-    push();
-
-    translate(width-16, 16);
-
-    fill(currentColors.text);
-    convertedC();
-    
-    pop();
-
-    return;
-
-    push();
-    rotate(15);
-
-    let xPos = 0;
-    let yPos = 0;
-
-    switch(formatDropdown.value()) {
-        case INSTAGRAM:
-            xPos = width - width/10;
-            yPos = -sz/2;
-            break;
-        case STORY:
-            // xPos = width - width/5;
-            // yPos = -sz/2;
-            break;
-        case WIDESCREEN:
-            break;
-        case POSTER:
-            break;
-    }
-
-    text("C", xPos, yPos);
-    pop();
-}
 
 function drawSentence() {
     // 3: headline is multiple words; split into pairs/quarters?
@@ -318,7 +219,9 @@ function draw() {
     push();
     imageMode(CENTER);
     // image(video, width/2, height/2 / 16*9); // TODO: adjust math there
+    // video.size(height * mbp_width / mbp_height, height);
     image(video, width/2, height/2); // TODO: adjust math there
+    // image(video, height * mbp_width / mbp_height, height);
     pop();
 
     textFont(typeface);
