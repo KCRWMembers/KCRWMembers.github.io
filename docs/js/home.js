@@ -1,14 +1,14 @@
 function navOnHover(self) {
-    document.querySelector('body').setAttribute('style', 'background-color:#129CB2');
+    select('body').setAttribute('style', 'background-color:#129CB2');
 }
 
 function navOffHover(self) {
-    document.querySelector('body').setAttribute('style', 'background-color:#f46020');
+    select('body').setAttribute('style', 'background-color:#f46020');
 }
 
 function playPauseOnClick(self) {
-    const playPauseIcon = document.querySelector('#btn-play-pause > i');
-    const streamAudio = document.querySelector("#kcrw-stream");
+    const playPauseIcon = select('#btn-play-pause > i');
+    const streamAudio = select("#kcrw-stream");
     if (streamAudio.paused) {
         streamAudio.play();
         playPauseIcon.setAttribute('class', 'gg-play-pause');
@@ -26,11 +26,8 @@ el.src = 'http://kcrw.streamguys1.com/kcrw_192k_mp3_on_air_internet_radio';
 el.autoplay = false;
 document.getElementById('radio-stream').appendChild(el);
 
-/// Post generator code below
 
-
-
-// TODO: figure out 300 DPI: https://gokcetaskan.com/artofcode/high-quality-export
+// TODO: for poster, figure out 300 DPI: https://gokcetaskan.com/artofcode/high-quality-export
 // TODO: PDF support: https://github.com/zenozeng/p5.js-pdf
 
 /**
@@ -45,7 +42,6 @@ document.getElementById('radio-stream').appendChild(el);
  */
 
 let c;
-let headline = "KCRW";
 
 let typeface;
 let formatDropdown;
@@ -88,10 +84,6 @@ function savePNGClick() {
     saveCanvas(c, `KCRW-template-${Date.now()}.png`);
 }
 
-function headlineChange() {
-    headline = this.value();
-}
-
 function resizeStory() {
     c.resize(1080/2, 1920/2);
     video.size(height * mbp_width / mbp_height, height);
@@ -131,7 +123,6 @@ function formatChanged() {
 
 function changeColors() {
     currentColors = random(colors);
-    // background(currentColors.background);
     noStroke();
     fill(currentColors.text);
 }
@@ -139,57 +130,36 @@ function changeColors() {
 let video;
 
 function setup() {
-    frameRate(60);
-    pixelDensity(2);
-
+    // Setup inputs
     select("#btn-save").mousePressed(savePNGClick);
+    select("#btn-change-colors").mousePressed(changeColors);
 
-    // const headlineInput = createInput('Headline');
-    // headlineInput.position(110, 10)
-    // headlineInput.size(200);
-    // headlineInput.value(headline);
-    // headlineInput.input(headlineChange);
-    // 
-    
-    video = createCapture(VIDEO);
-
-    // formatDropdown = select("#format-dropdown");
     formatDropdown = createSelect(select("#format-dropdown"));
-    // formatDropdown.position(360, 10);
     for (let o of OPTIONS) {
         formatDropdown.option(o);
     }
     formatDropdown.changed(formatChanged);
 
-    // const changeColorsBtn = createButton('Change Colors');
-    // changeColorsBtn.mousePressed(formatChanged);
-    // changeColorsBtn.position(460, 10);
-    select("#btn-change-colors").mousePressed(changeColors);
+    // General setup
+    frameRate(60);
+    pixelDensity(2);
 
+    video = createCapture(VIDEO);
     c = createCanvas(1080/2, 1080/2);
     c.position(10, 160);
     video.hide();
 
     changeColors();
+    resizeSquare();
+    textFont(typeface);
 }
 
-let smol = true;
 
-function drawSentence() {
-    // 3: headline is multiple words; split into pairs/quarters?
-}
-
-function logoFrame2() {
-    // Assume each letter SVG has the same dimensions [TODO: production work]
-    // 
-    // TODO: swap out colors, probably need to swap out SVG references
-    // ideally load everything at once
-
+function drawLogoFrame() {
     const svgSize = 100;
-    const svgMargin = 16; // This will need to change for IG story and posters
+    const svgMargin = 16; // TODO: This will need to change for IG story and posters
 
     push();
-    // tint(255, 204, 0);
     tint(currentColors.text);
     imageMode(CORNER);
     
@@ -212,38 +182,33 @@ function logoFrame2() {
     pop();
 }
 
-let data;
+let data = {};
 
 function draw() {
     background(currentColors.background);
+
+    // Center the video to the canvas
     push();
     imageMode(CENTER);
-    // image(video, width/2, height/2 / 16*9); // TODO: adjust math there
-    // video.size(height * mbp_width / mbp_height, height);
-    image(video, width/2, height/2); // TODO: adjust math there
-    // image(video, height * mbp_width / mbp_height, height);
+    image(video, width/2, height/2);
     pop();
 
-    textFont(typeface);
+    drawLogoFrame();
+
     fill(currentColors.text);
+    push();
+    textAlign(CENTER);
+    textSize(20);
+    text(data.title, width/2, height/2.1);
+    text(data.artist, width/2, height/1.9);
+    pop();
 
-    logoFrame2();
-
-    if (frameCount % 30 === 0) {
+    if (frameCount % 60 === 0) {
         let newdata = loadJSON("https://tracklist-api.kcrw.com/Music");
         if (data && data.title && data.artist) {
             select("#song-text").html(data.title);
             select("#artist-text").html(data.artist);
         }
         data = newdata;
-    }
-
-    if (data && data.title && data.artist) {
-        push();
-        textAlign(CENTER);
-        textSize(20);
-        text(data.title, width/2, height/2.1);
-        text(data.artist, width/2, height/1.9);
-        pop();
     }
 }
