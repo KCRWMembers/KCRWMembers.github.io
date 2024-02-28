@@ -18,6 +18,10 @@ function playPauseOnClick(self) {
     }
 }
 
+
+// TODO: pull in live streaming song titles, etc.
+// https://tracklist-api.kcrw.com/Music
+// use p5 loadJSON() -- https://p5js.org/reference/#/p5/loadJSON
 // create an element to contain our audio
 const el = document.createElement('audio');
 el.id = "kcrw-stream";
